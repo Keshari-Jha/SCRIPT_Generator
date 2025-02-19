@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENUM Script Generator</title>
+    <script>
+        function addRow() {
+            let table = document.getElementById("locations");
+            let row = table.insertRow(-1);
+            for (let i = 0; i < 5; i++) {
+                let cell = row.insertCell(i);
+                let input = document.createElement("input");
+                input.type = "text";
+                input.name = ["loc", "ip_a", "ip_b", "ip_c", "ip_d"][i];
+                cell.appendChild(input);
+            }
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            let action = document.querySelector('input[name="action"]:checked').value;
+            let rows = document.querySelectorAll("#locations tr");
+            let locations = [];
+
+            rows.forEach((row, index) => {
+                if (index > 0) { // Skip header row
+                    let inputs = row.getElementsByTagName("input");
+                    let values = [];
+                    for (let input of inputs) {
+                        values.push(input.value);
+                    }
+                    if (values.length === 5) {
+                        locations.push(values);
+                    }
+                }
+            });
+
+            fetch("/generate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action, locations })
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = "/download/" + data.filename;
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>ENUM Script Generator</h1>
+    
+    <form onsubmit="submitForm(event)">
+        <label>
+            <input type="radio" name="action" value="config" checked> Configuration
+        </label>
+        <label>
+            <input type="radio" name="action" value="delete"> Deletion
+        </label>
+        
+        <table id="locations" border="1">
+            <tr>
+                <th>Location</th>
+                <th>IP A</th>
+                <th>IP B</th>
+                <th>IP C</th>
+                <th>IP D</th>
+            </tr>
+            <tr>
+                <td><input type="text" name="loc"></td>
+                <td><input type="text" name="ip_a"></td>
+                <td><input type="text" name="ip_b"></td>
+                <td><input type="text" name="ip_c"></td>
+                <td><input type="text" name="ip_d"></td>
+            </tr>
+        </table>
+
+        <button type="button" onclick="addRow()">Add Location</button>
+        <button type="submit">Generate Script</button>
+    </form>
+</body>
+</html>
