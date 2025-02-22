@@ -23,9 +23,14 @@ document.getElementById("sccpBtn").addEventListener("click", function() {
 document.getElementById("ipsmBtn").addEventListener("click", function() {
     submitScript("ipsm");
 });
+document.getElementById("mcpmBtn").addEventListener("click", function() {
+    submitScript("mcpm");
+});
 document.getElementById("flashBtn").addEventListener("click", function() {
     submitScript("flash");
 });
+
+
 function submitScript(scriptType) {
     let action = document.querySelector('input[name="action"]:checked').value; // config or delete
     let rows = document.querySelectorAll("#locations tr");
