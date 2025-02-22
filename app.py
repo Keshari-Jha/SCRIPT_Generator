@@ -67,6 +67,21 @@ def generate_script(locations, action, script_type):
                 script += f"CHG-IP-LNK:PORT=A:IPADDR=0.0.0.0:LOC={loc}:\n"
                 script += f"DLT-CARD:LOC={loc}\n\n"
 
+        elif script_type == "mcpm": 
+            if action == "config":
+                script += f"ENT-CARD:loc={loc}:TYPE=SLIC:APPL=mcp\n"
+                script += f"CHG-IP-LNK:PORT=A:SUBMASK=255.255.255.0:MCAST=YES:IPADDR={ip_a}:LOC={loc}:DUPLEX=FULL:SPEED=100\n"
+                script += f"ENT-IP-HOST:HOST=mcpm{loc}:ipaddr={ip_a}\n"
+                script += f"CHG-IP-CARD:LOC={loc}.com:DEFROUTER={'.'.join(ip_a.split('.')[:3]) + '.1'}\n"
+                script += f"Alw-card:loc={loc}\n\n"
+
+            elif action == "delete":
+                script += f"inh-card:loc={loc}\n"
+                script += f"DLT-IP-HOST:HOST=mcpm{loc}\n"
+                script += f"CHG-IP-CARD:LOC={loc}:DEFROUTER=0.0.0.0\n"
+                script += f"CHG-IP-LNK:PORT=A:IPADDR=0.0.0.0:LOC={loc}:\n"
+                script += f"DLT-CARD:LOC={loc}\n\n"
+
         elif script_type == "flash": 
             if action == "flash":
                 script += f"INH-CARD:loc={loc}\n"
