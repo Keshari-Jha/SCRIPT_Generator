@@ -104,6 +104,8 @@ def generate():
     locations = data.get("locations")
     script_type=data.get("scriptType")
     script = generate_script(locations, action, script_type)
+    if not script.strip():
+        return jsonify({"error": "Generated script is empty"}), 400
     filename = f"{action}_script.txt"
     with open(filename, "w") as file:
         file.write(script)
