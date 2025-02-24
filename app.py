@@ -39,7 +39,7 @@ def generate_script(locations, action, script_type):
 
         elif script_type == "sccp": 
             if action == "config":
-                script += f"ENT-CARD:loc={loc}:TYPE=SLIC:APPL=vsccp\n"
+                script += f"ENT-CARD:loc={loc}:TYPE=SLIC:APPL=vsccp:data={ip_c}\n"
                 script += f"CHG-IP-LNK:PORT=A:SUBMASK=255.255.255.0:MCAST=YES:IPADDR={ip_a}:LOC={loc}:DUPLEX=FULL:SPEED=1000\n"
                 script += f"CHG-IP-LNK:PORT=B:SUBMASK=255.255.255.0:MCAST=YES:IPADDR={ip_b}:LOC={loc}:DUPLEX=FULL:SPEED=1000\n"
                 script += f"CHG-IP-CARD:LOC={loc}:DOMAIN=TEKELEC.COM:DEFROUTER=192.168.120.250\n"
