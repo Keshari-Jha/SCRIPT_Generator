@@ -24,8 +24,8 @@ def generate_script(locations, action, script_type):
 
             elif action == "delete":
                 script += f"inh-card:loc={loc}\n"
-                script += f"CHG-IP-CONN:CNAME=C{loc}:OPEN=No\n"
-                script += f"CHG-IP-CONN:CNAME=C{loc}a:OPEN=No\n"
+                script += f"CHG-IP-CONN:CNAME=C{loc}b:OPEN=No\n"
+                script += f"CHG-IP-CONN:CNAME=C{loc}c:OPEN=No\n"
                 script += f"DLT-IP-CONN:CNAME=c{loc}b\n"
                 script += f"DLT-IP-CONN:CNAME=C{loc}c\n"
                 script += f"DLT-IP-HOST:HOST=enum.{loc}b\n"
