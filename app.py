@@ -18,8 +18,8 @@ def generate_script(locations, action, script_type):
                 script += f"ENT-IP-HOST:HOST=enum.{loc}c:IPADDR={ip_c}:TYPE=LOCAL\n"
                 script += f"ENT-IP-CONN:LPORT={lport_udp_b}:LHOST=enum.{loc}b:PROT=UDP:CNAME=c{loc}b\n"
                 script += f"ENT-IP-CONN:LPORT={lport_udp_c}:LHOST=enum.{loc}c:PROT=UDP:CNAME=C{loc}c\n"
-                script += f"CHG-IP-CONN:CNAME=C{loc}:OPEN=YES\n"
-                script += f"CHG-IP-CONN:CNAME=C{loc}a:OPEN=YES\n"
+                script += f"CHG-IP-CONN:CNAME=C{loc}b:OPEN=YES\n"
+                script += f"CHG-IP-CONN:CNAME=C{loc}c:OPEN=YES\n"
                 script += f"Alw-card:loc={loc}\n\n"
 
             elif action == "delete":
@@ -104,8 +104,8 @@ def generate():
     locations = data.get("locations")
     script_type=data.get("scriptType")
     script = generate_script(locations, action, script_type)
-    if not script.strip():
-        return jsonify({"error": "Generated script is empty"}), 400
+    # if not script.strip():
+    #     return jsonify({"error": "Generated script is empty"}), 400
     filename = f"{action}_script.txt"
     with open(filename, "w") as file:
         file.write(script)
